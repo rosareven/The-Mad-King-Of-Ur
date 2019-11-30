@@ -14,8 +14,13 @@ public class PlayerStone : MonoBehaviour
     private void Start()
     {
         currentTilePosition = 0;
-        transform.position = movePath[currentTilePosition].transform.position;
         movePath[currentTilePosition].ToggleOccupant(this);
+    }
+
+    private void Update()
+    {
+        transform.position = Vector3.MoveTowards(transform.position, movePath[currentTilePosition].transform.position,
+            10 * Time.deltaTime);
     }
 
     private void OnMouseOver()
@@ -49,12 +54,10 @@ public class PlayerStone : MonoBehaviour
     {
         movePath[currentTilePosition].ToggleOccupant(null);
         currentTilePosition += diceValue;
-        transform.position = movePath[currentTilePosition].transform.position;
         if (movePath[currentTilePosition].occupant != null && movePath[currentTilePosition].occupant.player == enemy)
         {
             var enemyStone = movePath[currentTilePosition].occupant;
             enemyStone.currentTilePosition = 0;
-            enemyStone.transform.position = enemyStone.movePath[0].transform.position;
         }
 
         movePath[currentTilePosition].ToggleOccupant(this);
