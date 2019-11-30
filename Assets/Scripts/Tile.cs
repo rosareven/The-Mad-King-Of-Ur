@@ -1,8 +1,13 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Tile : MonoBehaviour
 {
-    
+    public PlayerStone occupant;
+    public bool isInvincible;
+    public bool isRollAgain;
+
+    public void ToggleOccupant(PlayerStone player)
+    {
+        occupant = player;
+    }
 }

@@ -1,28 +1,28 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.Serialization;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class StateManager : MonoBehaviour
 {
     public enum State
     {
-        Initialise, WaitForRoll, Rolling, WaitForMove
+        Initialise,
+        WaitForRoll,
+        Rolling,
+        WaitForMove
     }
 
-    private State _state = State.Initialise;
+    public AIPlayer ai;
+    public Text clippy;
     public bool isAiTurn;
     public Button rollDiceButton;
-    public AIPlayer ai;
+
+    public State state = State.Initialise;
     public Text whoseTurn;
-    public Text clippy;
 
     public void SetState(State newState)
     {
-        _state = newState;
-        switch (_state)
+        state = newState;
+        switch (state)
         {
             case State.Initialise:
                 break;
@@ -40,13 +40,6 @@ public class StateManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetButtonDown("Fire1") && _state == State.WaitForMove)
-        {
-            NextTurn();
-            SetState(State.WaitForRoll);
-            ShowClippy(false);
-        }
-
         if (!isAiTurn)
         {
             whoseTurn.text = "Player's Turn";
@@ -54,22 +47,31 @@ public class StateManager : MonoBehaviour
         else
         {
             whoseTurn.text = "AI's Turn";
+            if (state == State.WaitForMove) NextTurn();
         }
     }
 
-    private void ShowClippy(Boolean x)
+    private void ShowClippy(bool x)
     {
         clippy.GetComponent<Text>().enabled = x;
     }
 
-    private void NextTurn()
+    public void NextTurn()
     {
         isAiTurn = !isAiTurn;
+        SetState(State.WaitForRoll);
+        ShowClippy(false);
     }
-    
+
+    public void RollAgain()
+    {
+        SetState(State.WaitForRoll);
+        ShowClippy(false);
+    }
+
     private void EnableDice()
     {
-        if(!isAiTurn)
+        if (!isAiTurn)
         {
             rollDiceButton.interactable = true;
             rollDiceButton.GetComponentInChildren<Text>().enabled = true;
