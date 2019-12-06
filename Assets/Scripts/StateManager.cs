@@ -14,7 +14,9 @@ public class StateManager : MonoBehaviour
     public AIPlayer ai;
     public Text clippy;
     public bool isAiTurn;
+    public Button passButton;
     public Button rollDiceButton;
+    public GameObject highlight;
 
     public State state = State.Initialise;
     public Text whoseTurn;
@@ -34,8 +36,11 @@ public class StateManager : MonoBehaviour
                 break;
             case State.WaitForMove:
                 ShowClippy(true);
+                MoveAI();
                 break;
         }
+
+        Debug.Log(state);
     }
 
     private void Update()
@@ -47,7 +52,19 @@ public class StateManager : MonoBehaviour
         else
         {
             whoseTurn.text = "AI's Turn";
-            if (state == State.WaitForMove) NextTurn();
+        }
+
+        if (!isAiTurn && state == State.WaitForMove) passButton.gameObject.SetActive(true);
+        else
+            passButton.gameObject.SetActive(false);
+    }
+
+    private void MoveAI()
+    {
+        if (isAiTurn)
+        {
+            ai.ProbeStones();
+            ai.MoveStone();
         }
     }
 

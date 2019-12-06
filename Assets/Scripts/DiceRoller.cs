@@ -7,7 +7,7 @@ public class DiceRoller : MonoBehaviour
 {
     private Sprite[] _allDiceImages;
 
-    private int _diceTotal;
+    public int diceTotal;
     public Text diceDisplay;
     public Sprite[] diceImageOne;
     public Sprite[] diceImageZero;
@@ -60,8 +60,8 @@ public class DiceRoller : MonoBehaviour
                 new Quaternion(Random.Range(0, 360), Random.Range(0, 360), 0, 0);
         }
 
-        _diceTotal = diceValues[0] + diceValues[1] + diceValues[2] + diceValues[3];
-        diceDisplay.text = _diceTotal.ToString();
+        diceTotal = diceValues[0] + diceValues[1] + diceValues[2] + diceValues[3];
+        diceDisplay.text = diceTotal.ToString();
         stateManager.SetState(StateManager.State.WaitForMove);
     }
 }
